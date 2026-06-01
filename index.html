@@ -10,8 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- FontAwesome for Rich Decorative Dashboard Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Chart.js for High-End Interactive Analytics -->
-    <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=IO7wo8pYTx00n7qyjg19YY_5UNt2yZwRNcdo1xIkUJncvDs4dS4PeJDSVv12Wq9SLtgQmqUWVARijSouGbVJi0gym2uCjw-bKLGEHQnfetdtB93Qk-lXTibjha3hAoBGPL51B5mOSDDhx63CVvX_90fAqVC0TJfuhWTmrfGd4rf4KJAdpPEGL9TCY-jp6VyQ8XvF1WkQ6eteJFzyXCV1HcGykO38ik__J07LZpHWBQbdTsFlRXd_XY0W6AsMBFw8P2G5Ntqm11oB3OGQXKhlnjZfa44kuuy857Se6wFqTGbbB1DdgZ_MIWpvnm3h07ls" charset="UTF-8"></script><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chart.js for High-End Interactive Analytics (deferred so a slow CDN never blocks HTML parsing) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
         :root {
@@ -189,7 +189,7 @@
             border-radius: var(--radius-md);
             color: var(--text-charcoal);
             font-family: inherit;
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 500;
             outline: none;
             transition: var(--transition);
@@ -268,7 +268,7 @@
             background-color: var(--bg-cream);
             border: 1px solid var(--border-beige);
             color: var(--text-charcoal);
-            padding: 8px 14px;
+            padding: 12px 16px;
             border-radius: 30px;
             font-size: 0.8rem;
             font-weight: 600;
@@ -335,7 +335,7 @@
         }
 
         .appliance-watts {
-            font-size: 0.72rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
             margin-top: 2px;
         }
@@ -344,13 +344,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 3px;
+            gap: 2px;
             background-color: var(--bg-cream);
             border: 1px solid var(--border-beige);
             border-radius: 30px;
-            padding: 2px 5px;
+            padding: 2px 4px;
             width: 100%;
-            max-width: 82px;
+            max-width: 96px;
             margin: 0 auto;
         }
 
@@ -364,16 +364,17 @@
             background: none;
             border: none;
             color: var(--primary-forest);
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             font-weight: 800;
             cursor: pointer;
-            width: 20px;
-            height: 20px;
+            width: 28px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
             transition: var(--transition);
+            flex-shrink: 0;
         }
 
         .picker-btn:hover {
@@ -503,7 +504,7 @@
         .tab-btn {
             background: none;
             border: none;
-            padding: 10px 16px;
+            padding: 12px 18px;
             font-size: 0.88rem;
             font-weight: 700;
             color: var(--text-muted);
@@ -689,6 +690,63 @@
             font-weight: 500;
             font-size: 0.8rem;
         }
+
+        /* ===== Mobile Responsive Improvements ===== */
+
+        @media (max-width: 600px) {
+            body { padding: 12px; }
+            header { margin-bottom: 20px; padding: 12px 0; }
+            header h1 { font-size: 1.5rem; letter-spacing: -0.02em; }
+            header p { font-size: 0.9rem; }
+            .card { padding: 16px; margin-bottom: 16px; }
+            .chart-box { height: 200px; }
+        }
+
+        @media (max-width: 768px) {
+            /* Appliance header: reflow to 2-row (name row + 4 picker columns) */
+            .appliance-header {
+                grid-template-columns: repeat(4, 1fr);
+                grid-template-areas: "info info info info" "qty p1 p2 p3";
+                gap: 6px;
+            }
+            .appliance-header > div:nth-child(1) { grid-area: info; }
+            .appliance-header > div:nth-child(2) { grid-area: qty; text-align: center; }
+            .appliance-header > div:nth-child(3) { grid-area: p1; text-align: center; }
+            .appliance-header > div:nth-child(4) { grid-area: p2; text-align: center; }
+            .appliance-header > div:nth-child(5) { grid-area: p3; text-align: center; }
+            .appliance-header small { display: none; }
+
+            /* Appliance rows: same 2-row reflow */
+            .appliance-row {
+                grid-template-columns: repeat(4, 1fr);
+                grid-template-areas: "info info info info" "qty p1 p2 p3";
+                gap: 6px;
+                padding: 10px 4px;
+            }
+            .appliance-info {
+                grid-area: info;
+                flex-direction: row;
+                align-items: baseline;
+                gap: 6px;
+                padding-right: 0;
+            }
+            .appliance-row > div:nth-child(2) { grid-area: qty; }
+            .appliance-row > div:nth-child(3) { grid-area: p1; }
+            .appliance-row > div:nth-child(4) { grid-area: p2; }
+            .appliance-row > div:nth-child(5) { grid-area: p3; }
+
+            /* Hours pickers: fill column width, tighter padding */
+            .hours-picker { max-width: 100%; padding: 3px 2px; }
+            .period-max-label { font-size: 0.6rem; }
+
+            /* Expand picker-btn tap area to 44px without growing layout */
+            .picker-btn { position: relative; }
+            .picker-btn::after {
+                content: '';
+                position: absolute;
+                inset: -8px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -729,7 +787,7 @@
                             <span class="label-desc">ราคารวมเบ็ดเสร็จสุทธิ (บาท)</span>
                         </label>
                         <div class="input-wrapper">
-                            <input type="number" id="investmentCost" value="160000" oninput="calculateSolarPayback()">
+                            <input type="number" id="investmentCost" value="125000" oninput="runCalculation()">
                             <span class="input-suffix">฿</span>
                         </div>
                     </div>
@@ -739,7 +797,7 @@
                             ฐานภาษีเงินได้บุคคลธรรมดา %
                             <span class="label-desc">ใช้สิทธิ์ลดหย่อนตาม พ.ร.ฎ. 805</span>
                         </label>
-                        <select id="taxBracket" onchange="calculateSolarPayback()">
+                        <select id="taxBracket" onchange="runCalculation()">
                             <option value="0">0% (ได้รับการยกเว้นภาษี)</option>
                             <option value="0.05">ฐานภาษี 5%</option>
                             <option value="0.10">ฐานภาษี 10%</option>
@@ -768,7 +826,7 @@
                         โครงการขายไฟคืนสู่โครงข่าย (โซลาร์ภาคประชาชน)
                         <span class="label-desc">ส่งออกและขายพลังงานส่วนเกินคืนให้ MEA/PEA</span>
                     </label>
-                    <select id="allowExport" onchange="calculateSolarPayback()">
+                    <select id="allowExport" onchange="runCalculation()">
                         <option value="false">ปิดใช้งาน (Zero-Export / พลังงานส่วนเกินถูกตัดทิ้ง)</option>
                         <option value="true">เปิดใช้งาน (ขายคืนที่อัตรา 2.20 บาท/หน่วย)</option>
                     </select>
@@ -780,7 +838,7 @@
                         <span class="label-desc">ต้นทุนดำเนินการประจำปีที่หักออกจากผลตอบแทน</span>
                     </label>
                     <div class="input-wrapper">
-                        <input type="number" id="maintenanceCost" value="1000" min="0" oninput="calculateSolarPayback()">
+                        <input type="number" id="maintenanceCost" value="1000" min="0" oninput="runCalculation()">
                         <span class="input-suffix">฿/ปี</span>
                     </div>
                 </div>
@@ -798,9 +856,9 @@
                             รูปแบบประเภทอัตราค่าไฟฟ้า
                             <span class="label-desc">โครงสร้างราคาการเรียกเก็บเงินของมิเตอร์</span>
                         </label>
-                        <select id="tariffType" onchange="toggleTariffInputs(); calculateSolarPayback();">
+                        <select id="tariffType" onchange="toggleTariffInputs(); runCalculation();">
                             <option value="TOU">มิเตอร์ประเภท TOU (Time of Use)</option>
-                            <option value="NORMAL">มิเตอร์ปกติ (แบบก้าวหน้า/อัตราคงที่เฉลี่ย)</option>
+                            <option value="NORMAL" selected>มิเตอร์ปกติ (แบบก้าวหน้า/อัตราคงที่เฉลี่ย)</option>
                         </select>
                     </div>
                     
@@ -810,7 +868,7 @@
                             <span class="label-desc">อัตราค่า Ft ประจำงวดปัจจุบัน (บาท/หน่วย)</span>
                         </label>
                         <div class="input-wrapper">
-                            <input type="number" id="ftRate" value="0.1623" step="0.0001" oninput="calculateSolarPayback()">
+                            <input type="number" id="ftRate" value="0.1623" step="0.0001" oninput="runCalculation()">
                             <span class="input-suffix">฿</span>
                         </div>
                     </div>
@@ -827,7 +885,7 @@
                                     <span class="label-desc">09:00 - 22:00 จันทร์-ศุกร์</span>
                                 </label>
                                 <div class="input-wrapper">
-                                    <input type="number" id="touPeak" value="5.7982" step="0.0001" oninput="calculateSolarPayback()">
+                                    <input type="number" id="touPeak" value="5.7982" step="0.0001" oninput="runCalculation()">
                                     <span class="input-suffix">฿</span>
                                 </div>
                                 <span id="touPeakTotal" class="live-preview-badge">รวม Ft: ฿5.9605 / หน่วย</span>
@@ -839,7 +897,7 @@
                                     <span class="label-desc">22:00 - 09:00 จันทร์-ศุกร์</span>
                                 </label>
                                 <div class="input-wrapper">
-                                    <input type="number" id="touOffPeak" value="2.6369" step="0.0001" oninput="calculateSolarPayback()">
+                                    <input type="number" id="touOffPeak" value="2.6369" step="0.0001" oninput="runCalculation()">
                                     <span class="input-suffix">฿</span>
                                 </div>
                                 <span id="touOffPeakTotal" class="live-preview-badge">รวม Ft: ฿2.7992 / หน่วย</span>
@@ -856,7 +914,7 @@
                                     <span class="label-desc">เสาร์-อาทิตย์ และวันหยุดราชการหลัก (ตลอด 24 ชั่วโมง)</span>
                                 </label>
                                 <div class="input-wrapper">
-                                    <input type="number" id="touOffPeakHoliday" value="2.6369" step="0.0001" oninput="calculateSolarPayback()">
+                                    <input type="number" id="touOffPeakHoliday" value="2.6369" step="0.0001" oninput="runCalculation()">
                                     <span class="input-suffix">฿</span>
                                 </div>
                                 <span id="touOffPeakHolidayTotal" class="live-preview-badge">รวม Ft: ฿2.7992 / หน่วย</span>
@@ -878,7 +936,7 @@
                             <span class="label-desc">ประมาณการค่าไฟฟ้าฐานเฉลี่ยต่อหน่วย</span>
                         </label>
                         <div class="input-wrapper">
-                            <input type="number" id="normalRate" value="4.4000" step="0.01" oninput="calculateSolarPayback()">
+                            <input type="number" id="normalRate" value="4.4000" step="0.01" oninput="runCalculation()">
                             <span class="input-suffix">฿</span>
                         </div>
                         <span id="normalTotal" class="live-preview-badge">รวม Ft: ฿4.5623 / หน่วย</span>
@@ -896,10 +954,10 @@
                 </h3>
 
                 <div class="preset-container">
-                    <button class="preset-btn active" id="preset_default" onclick="setPreset('default')">
+                    <button class="preset-btn" id="preset_default" onclick="setPreset('default')">
                         <i class="fa-solid fa-house-user"></i> ครอบครัวทั่วไป
                     </button>
-                    <button class="preset-btn" id="preset_wfh" onclick="setPreset('wfh')">
+                    <button class="preset-btn active" id="preset_wfh" onclick="setPreset('wfh')">
                         <i class="fa-solid fa-laptop-house"></i> ทำงานที่บ้าน (WFH)
                     </button>
                     <button class="preset-btn" id="preset_office" onclick="setPreset('office')">
@@ -912,6 +970,11 @@
                         <i class="fa-solid fa-leaf"></i> บ้านประหยัดพลังงาน
                     </button>
                 </div>
+
+                <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0 0 18px; line-height: 1.5;">
+                    <i class="fa-solid fa-temperature-half" style="color: var(--accent-gold);"></i>
+                    หมายเหตุ: ระบบปรับการกินไฟของแอร์ตามอุณหภูมิแต่ละช่วงเวลาโดยอัตโนมัติ — กลางคืนอากาศเย็นคอมเพรสเซอร์ทำงานน้อยลง (~70%) กลางวันอากาศร้อนทำงานหนักสุด (~105%) และช่วงเย็น (~85%) จึงกรอกเพียงกำลังวัตต์ตามป้ายเครื่องช่องเดียว
+                </p>
 
                 <!-- 5.1 WEEKDAY MATRIX -->
                 <div id="panel_weekday_appliances" style="margin-bottom: 25px;">
@@ -1015,8 +1078,12 @@
                                 <td>รายได้เสริมจากการขายไฟคืน (โซลาร์ภาคประชาชน)</td>
                                 <td id="tblExportRevenue" class="text-right">฿0</td>
                             </tr>
+                            <tr>
+                                <td style="padding-left: 28px; color: var(--text-muted);">↳ หัก ค่าบำรุงรักษา/ดูแลระบบรายปี</td>
+                                <td id="tblMaintenance" class="text-right" style="color: #c2410c;">-฿0</td>
+                            </tr>
                             <tr class="highlight-row" style="background-color: var(--bg-cream);">
-                                <td><b>ผลประโยชน์รวมสะสมรายปีที่ได้รับ</b></td>
+                                <td><b>ผลประโยชน์สุทธิรายปี (หลังหักค่าดูแล)</b></td>
                                 <td id="tblTotalBenefit" class="text-right text-emerald">฿0</td>
                             </tr>
                             <tr class="highlight-row" style="border-top: 2px dashed var(--border-beige);">
@@ -1083,8 +1150,13 @@
                                     <td id="tdExport" class="text-right">0 kWh</td>
                                     <td id="tdExportValue" class="text-right text-emerald">฿0</td>
                                 </tr>
+                                <tr>
+                                    <td>↳ หัก ค่าบำรุงรักษา/ดูแลระบบรายปี</td>
+                                    <td class="text-right" style="color: var(--text-muted);">—</td>
+                                    <td id="tdMaintenanceCash" class="text-right" style="color: #c2410c;">-฿0</td>
+                                </tr>
                                 <tr style="font-weight: bold; background-color: var(--bg-cream);">
-                                    <td><b>ผลประโยชน์รวมทางเศรษฐศาสตร์ของโครงการรายปี</b></td>
+                                    <td><b>ผลประโยชน์สุทธิทางเศรษฐศาสตร์ของโครงการรายปี</b></td>
                                     <td id="tdTotalBenefitUnits" class="text-right">0 kWh</td>
                                     <td id="tdTotalBenefitCash" class="text-right text-emerald">฿0</td>
                                 </tr>
@@ -1132,27 +1204,35 @@
  * ====================================================================
  */
 const applianceMasterList = [
-    { id: "ac_inv_12", name: "แอร์ Inverter (12,000 BTU)", watts: 900, maxP1: 11, maxP2: 7, maxP3: 6,
+    { id: "ac_inv_9", name: "แอร์ Inverter (9,000 BTU)", watts: 680, isAc: true, maxP1: 11, maxP2: 7, maxP3: 6,
       slotsP1: [22, 23, 0, 1, 2, 3, 4, 5, 6, 7, 8],
       slotsP2: [12, 13, 14, 11, 10, 15, 9],
       slotsP3: [19, 20, 21, 18, 17, 16] },
-    { id: "ac_inv_18", name: "แอร์ Inverter (18,000 BTU)", watts: 1400, maxP1: 11, maxP2: 7, maxP3: 6,
+    { id: "ac_inv_12", name: "แอร์ Inverter (12,000 BTU)", watts: 900, isAc: true, maxP1: 11, maxP2: 7, maxP3: 6,
       slotsP1: [22, 23, 0, 1, 2, 3, 4, 5, 6, 7, 8],
       slotsP2: [12, 13, 14, 11, 10, 15, 9],
       slotsP3: [19, 20, 21, 18, 17, 16] },
-    { id: "ac_inv_24", name: "แอร์ Inverter (24,000 BTU)", watts: 2100, maxP1: 11, maxP2: 7, maxP3: 6,
+    { id: "ac_inv_18", name: "แอร์ Inverter (18,000 BTU)", watts: 1400, isAc: true, maxP1: 11, maxP2: 7, maxP3: 6,
       slotsP1: [22, 23, 0, 1, 2, 3, 4, 5, 6, 7, 8],
       slotsP2: [12, 13, 14, 11, 10, 15, 9],
       slotsP3: [19, 20, 21, 18, 17, 16] },
-    { id: "ac_non_12", name: "แอร์ธรรมดา Non-Inverter (12,000 BTU)", watts: 1150, maxP1: 11, maxP2: 7, maxP3: 6,
+    { id: "ac_inv_24", name: "แอร์ Inverter (24,000 BTU)", watts: 2100, isAc: true, maxP1: 11, maxP2: 7, maxP3: 6,
       slotsP1: [22, 23, 0, 1, 2, 3, 4, 5, 6, 7, 8],
       slotsP2: [12, 13, 14, 11, 10, 15, 9],
       slotsP3: [19, 20, 21, 18, 17, 16] },
-    { id: "ac_non_18", name: "แอร์ธรรมดา Non-Inverter (18,000 BTU)", watts: 1700, maxP1: 11, maxP2: 7, maxP3: 6,
+    { id: "ac_non_9", name: "แอร์ธรรมดา Non-Inverter (9,000 BTU)", watts: 870, isAc: true, maxP1: 11, maxP2: 7, maxP3: 6,
       slotsP1: [22, 23, 0, 1, 2, 3, 4, 5, 6, 7, 8],
       slotsP2: [12, 13, 14, 11, 10, 15, 9],
       slotsP3: [19, 20, 21, 18, 17, 16] },
-    { id: "ac_non_24", name: "แอร์ธรรมดา Non-Inverter (24,000 BTU)", watts: 2550, maxP1: 11, maxP2: 7, maxP3: 6,
+    { id: "ac_non_12", name: "แอร์ธรรมดา Non-Inverter (12,000 BTU)", watts: 1150, isAc: true, maxP1: 11, maxP2: 7, maxP3: 6,
+      slotsP1: [22, 23, 0, 1, 2, 3, 4, 5, 6, 7, 8],
+      slotsP2: [12, 13, 14, 11, 10, 15, 9],
+      slotsP3: [19, 20, 21, 18, 17, 16] },
+    { id: "ac_non_18", name: "แอร์ธรรมดา Non-Inverter (18,000 BTU)", watts: 1700, isAc: true, maxP1: 11, maxP2: 7, maxP3: 6,
+      slotsP1: [22, 23, 0, 1, 2, 3, 4, 5, 6, 7, 8],
+      slotsP2: [12, 13, 14, 11, 10, 15, 9],
+      slotsP3: [19, 20, 21, 18, 17, 16] },
+    { id: "ac_non_24", name: "แอร์ธรรมดา Non-Inverter (24,000 BTU)", watts: 2550, isAc: true, maxP1: 11, maxP2: 7, maxP3: 6,
       slotsP1: [22, 23, 0, 1, 2, 3, 4, 5, 6, 7, 8],
       slotsP2: [12, 13, 14, 11, 10, 15, 9],
       slotsP3: [19, 20, 21, 18, 17, 16] },
@@ -1164,7 +1244,11 @@ const applianceMasterList = [
       slotsP1: [22, 23, 0, 1, 2, 3, 4, 5, 6, 7, 8],
       slotsP2: [12, 13, 14, 11, 10, 15, 9],
       slotsP3: [19, 20, 21, 18, 17, 16] },
-    { id: "pc", name: "คอมพิวเตอร์ โน้ตบุ๊ก", watts: 50, maxP1: 11, maxP2: 7, maxP3: 6,
+    { id: "pc", name: "คอมพิวเตอร์ตั้งโต๊ะ/โน้ตบุ๊ก สำนักงาน", watts: 50, maxP1: 11, maxP2: 7, maxP3: 6,
+      slotsP1: [22, 23, 0, 1, 8, 7, 6, 5, 4, 3, 2],
+      slotsP2: [9, 10, 11, 13, 14, 15, 12],
+      slotsP3: [18, 19, 20, 21, 17, 16] },
+    { id: "gaming_pc", name: "คอมพิวเตอร์เกมมิ่ง (Gaming PC)", watts: 200, maxP1: 11, maxP2: 7, maxP3: 6,
       slotsP1: [22, 23, 0, 1, 8, 7, 6, 5, 4, 3, 2],
       slotsP2: [9, 10, 11, 13, 14, 15, 12],
       slotsP3: [18, 19, 20, 21, 17, 16] },
@@ -1176,7 +1260,7 @@ const applianceMasterList = [
       slotsP1: [7, 8, 6, 5, 22, 23, 0, 1, 2, 3, 4],
       slotsP2: [10, 11, 9, 12, 13, 14, 15],
       slotsP3: [18, 19, 17, 16, 20, 21] },
-    { id: "dryer", name: "เครื่องอบผ้า", watts: 600, maxP1: 11, maxP2: 7, maxP3: 6,
+    { id: "dryer", name: "เครื่องอบผ้า (ฮีตปั๊ม Heat Pump)", watts: 900, maxP1: 11, maxP2: 7, maxP3: 6,
       slotsP1: [7, 8, 6, 5, 22, 23, 0, 1, 2, 3, 4],
       slotsP2: [10, 11, 9, 12, 13, 14, 15],
       slotsP3: [18, 19, 17, 16, 20, 21] },
@@ -1214,9 +1298,9 @@ const presetConfigurations = {
         hdHours: { ac_inv_12: { p1: 7, p2: 5, p3: 5 }, ac_inv_18: { p1: 0, p2: 0, p3: 0 }, ac_inv_24: { p1: 0, p2: 0, p3: 0 }, ac_non_12: { p1: 0, p2: 0, p3: 0 }, ac_non_18: { p1: 0, p2: 0, p3: 0 }, ac_non_24: { p1: 0, p2: 0, p3: 0 }, fridge: { p1: 11, p2: 7, p3: 6 }, fan: { p1: 8, p2: 6, p3: 5 }, pc: { p1: 2, p2: 2, p3: 4 }, tv: { p1: 4, p2: 4, p3: 5 }, washer: { p1: 0, p2: 2, p3: 1 }, dryer: { p1: 0, p2: 0, p3: 0 }, oven: { p1: 0, p2: 2, p3: 1 }, ev_charger: { p1: 0, p2: 0, p3: 0 }, lights: { p1: 5, p2: 1, p3: 6 } }
     },
     office: {
-        wdQty: { ac_inv_12: 1, ac_inv_18: 1, ac_inv_24: 0, ac_non_12: 0, ac_non_18: 0, ac_non_24: 0, fridge: 1, fan: 2, pc: 1, tv: 1, washer: 1, dryer: 0, oven: 1, ev_charger: 0, lights: 12 },
+        wdQty: { ac_inv_12: 1, ac_inv_18: 0, ac_inv_24: 0, ac_non_12: 0, ac_non_18: 0, ac_non_24: 0, fridge: 1, fan: 2, pc: 1, tv: 1, washer: 1, dryer: 0, oven: 1, ev_charger: 0, lights: 12 },
         wdHours: { ac_inv_12: { p1: 7, p2: 0, p3: 4 }, ac_inv_18: { p1: 0, p2: 0, p3: 0 }, ac_inv_24: { p1: 0, p2: 0, p3: 0 }, ac_non_12: { p1: 0, p2: 0, p3: 0 }, ac_non_18: { p1: 0, p2: 0, p3: 0 }, ac_non_24: { p1: 0, p2: 0, p3: 0 }, fridge: { p1: 11, p2: 7, p3: 6 }, fan: { p1: 4, p2: 0, p3: 5 }, pc: { p1: 2, p2: 0, p3: 2 }, tv: { p1: 2, p2: 0, p3: 4 }, washer: { p1: 0, p2: 0, p3: 1 }, dryer: { p1: 0, p2: 0, p3: 0 }, oven: { p1: 0, p2: 0, p3: 1 }, ev_charger: { p1: 0, p2: 0, p3: 0 }, lights: { p1: 4, p2: 0, p3: 5 } },
-        hdQty: { ac_inv_12: 1, ac_inv_18: 1, ac_inv_24: 0, ac_non_12: 0, ac_non_18: 0, ac_non_24: 0, fridge: 1, fan: 4, pc: 1, tv: 2, washer: 1, dryer: 0, oven: 1, ev_charger: 0, lights: 15 },
+        hdQty: { ac_inv_12: 1, ac_inv_18: 0, ac_inv_24: 0, ac_non_12: 0, ac_non_18: 0, ac_non_24: 0, fridge: 1, fan: 4, pc: 1, tv: 2, washer: 1, dryer: 0, oven: 1, ev_charger: 0, lights: 15 },
         hdHours: { ac_inv_12: { p1: 6, p2: 6, p3: 5 }, ac_inv_18: { p1: 0, p2: 0, p3: 0 }, ac_inv_24: { p1: 0, p2: 0, p3: 0 }, ac_non_12: { p1: 0, p2: 0, p3: 0 }, ac_non_18: { p1: 0, p2: 0, p3: 0 }, ac_non_24: { p1: 0, p2: 0, p3: 0 }, fridge: { p1: 11, p2: 7, p3: 6 }, fan: { p1: 9, p2: 7, p3: 6 }, pc: { p1: 3, p2: 3, p3: 3 }, tv: { p1: 4, p2: 4, p3: 5 }, washer: { p1: 0, p2: 2, p3: 0 }, dryer: { p1: 0, p2: 0, p3: 0 }, oven: { p1: 0, p2: 1, p3: 1 }, ev_charger: { p1: 0, p2: 0, p3: 0 }, lights: { p1: 5, p2: 0, p3: 5 } }
     },
     heavy: {
@@ -1238,6 +1322,14 @@ const cleanSkyCurve = {
     12: 1.00, 13: 0.95, 14: 0.82, 15: 0.58, 16: 0.30, 17: 0.08
 };
 
+// AC compressor draw scales with the indoor/outdoor temperature gap, which tracks
+// the daily heat cycle. Applied only to appliances flagged isAc — the user enters one
+// nameplate wattage and the model adjusts effective draw per period:
+//   p1 = night (22:00-09:00, coolest, compressor cycles least)
+//   p2 = midday (09:00-16:00, hottest, compressor works hardest)
+//   p3 = evening (16:00-22:00, warm but cooling down)
+const AC_THERMAL_FACTOR = { p1: 0.70, p2: 1.05, p3: 0.85 };
+
 let loadProfileChart = null;
 let paybackChart = null;
 let currentChartDayType = 'weekday';
@@ -1248,11 +1340,20 @@ const TOU_HOLIDAY_DAYS = 123;
 
 window.addEventListener('DOMContentLoaded', () => {
     moveRoiDashboardToPrimaryPosition();
-    loadPresetState('default');
+    loadPresetState('wfh');
     renderAllApplianceTables();
     toggleTariffInputs();
-    calculateSolarPayback();
+    // Defer the first heavy pass (chart instantiation) so the layout and inputs
+    // paint immediately — noticeably faster perceived load, especially on mobile.
+    // Use setTimeout, not requestAnimationFrame: rAF callbacks are paused while the
+    // tab is hidden/backgrounded, which would leave the dashboard blank until the
+    // user interacts. setTimeout fires regardless of visibility.
+    setTimeout(runCalculation, 0);
 });
+
+function runCalculation() {
+    calculateSolarPayback();
+}
 
 function moveRoiDashboardToPrimaryPosition() {
     const dashboard = document.getElementById("resultsCard");
@@ -1268,6 +1369,20 @@ function loadPresetState(key) {
     stateWeekdayHours = JSON.parse(JSON.stringify(config.wdHours));
     stateHolidayQty = JSON.parse(JSON.stringify(config.hdQty));
     stateHolidayHours = JSON.parse(JSON.stringify(config.hdHours));
+    // Fill any appliance a preset doesn't list (e.g. newly added units) with safe defaults
+    // so rendering and calculation never hit undefined keys.
+    normalizeApplianceState();
+}
+
+function normalizeApplianceState() {
+    applianceMasterList.forEach(app => {
+        [stateWeekdayQty, stateHolidayQty].forEach(qtyMap => {
+            if (qtyMap[app.id] === undefined) qtyMap[app.id] = 0;
+        });
+        [stateWeekdayHours, stateHolidayHours].forEach(hoursMap => {
+            if (hoursMap[app.id] === undefined) hoursMap[app.id] = { p1: 0, p2: 0, p3: 0 };
+        });
+    });
 }
 
 function renderAllApplianceTables() {
@@ -1371,7 +1486,7 @@ function adjustQty(typeKey, appId, delta) {
     targetMap[appId] = current;
     
     document.getElementById(`${typeKey}_${appId}_qty_val`).innerText = current;
-    calculateSolarPayback();
+    runCalculation();
 }
 
 function adjustHours(typeKey, appId, period, delta) {
@@ -1389,7 +1504,7 @@ function adjustHours(typeKey, appId, period, delta) {
     
     targetHours[appId][period] = current;
     document.getElementById(`${typeKey}_${appId}_${period}_val`).innerText = current;
-    calculateSolarPayback();
+    runCalculation();
 }
 
 function setPreset(key) {
@@ -1399,19 +1514,19 @@ function setPreset(key) {
     
     loadPresetState(key);
     renderAllApplianceTables();
-    calculateSolarPayback();
+    runCalculation();
 }
 
 function updateKwpValue(val) {
     const kwp = parseFloat(val);
     const panelsCount = Math.round(kwp / 0.625);
     document.getElementById('kwpValue').innerText = `${kwp.toFixed(3)} kWp (${panelsCount} แผง)`;
-    calculateSolarPayback();
+    runCalculation();
 }
 
 function updateCloudValue(val) {
     document.getElementById('cloudValue').innerText = val + "%";
-    calculateSolarPayback();
+    runCalculation();
 }
 
 function toggleTariffInputs() {
@@ -1441,7 +1556,7 @@ function setChartDayType(dayType) {
     currentChartDayType = dayType;
     document.getElementById("btn_toggle_wd").classList.toggle("active", dayType === 'weekday');
     document.getElementById("btn_toggle_hd").classList.toggle("active", dayType === 'holiday');
-    calculateSolarPayback(); 
+    runCalculation();
 }
 
 function build24HourLoadProfile(qtyMap, hoursMap) {
@@ -1454,14 +1569,19 @@ function build24HourLoadProfile(qtyMap, hoursMap) {
         
         if (qty > 0) {
             let totalLoadWatts = app.isEv ? (qty * 1000) : (qty * app.watts);
-            
+
             let p1Slots = app.slotsP1 || [22, 23, 0, 1, 2, 3, 4, 5, 6, 7, 8];
             let p2Slots = app.slotsP2 || [9, 10, 11, 12, 13, 14, 15];
             let p3Slots = app.slotsP3 || [16, 17, 18, 19, 20, 21];
-            
-            for (let i = 0; i < Math.min(p1H, 11); i++) { hourlyDemand[p1Slots[i]] += totalLoadWatts; }
-            for (let i = 0; i < Math.min(p2H, 7); i++) { hourlyDemand[p2Slots[i]] += totalLoadWatts; }
-            for (let i = 0; i < Math.min(p3H, 6); i++) { hourlyDemand[p3Slots[i]] += totalLoadWatts; }
+
+            // AC effective draw varies with outdoor temperature per period; all others draw flat.
+            const f1 = app.isAc ? AC_THERMAL_FACTOR.p1 : 1;
+            const f2 = app.isAc ? AC_THERMAL_FACTOR.p2 : 1;
+            const f3 = app.isAc ? AC_THERMAL_FACTOR.p3 : 1;
+
+            for (let i = 0; i < Math.min(p1H, 11); i++) { hourlyDemand[p1Slots[i]] += totalLoadWatts * f1; }
+            for (let i = 0; i < Math.min(p2H, 7); i++) { hourlyDemand[p2Slots[i]] += totalLoadWatts * f2; }
+            for (let i = 0; i < Math.min(p3H, 6); i++) { hourlyDemand[p3Slots[i]] += totalLoadWatts * f3; }
         }
     });
     return hourlyDemand;
@@ -1681,17 +1801,27 @@ function calculateSolarPayback() {
         document.getElementById("irrVal").innerText = irrValue !== null ? `${irrValue.toFixed(1)}%` : "--";
     }
 
-    document.getElementById("tblBillSavings").innerText = `฿${Math.round(annualFinancialSavings).toLocaleString()}`;
-    document.getElementById("tblExportRevenue").innerText = `฿${Math.round(annualExportRevenue).toLocaleString()}`;
-    document.getElementById("tblTotalBenefit").innerText = `฿${Math.round(netAnnualBenefit).toLocaleString()}`;
+    // Round line items, then derive the displayed total from them so the table always
+    // reconciles exactly (avoids ±฿1 drift from rounding each value independently).
+    // The precise netAnnualBenefit still drives payback/ROI/IRR above.
+    const rSavings = Math.round(annualFinancialSavings);
+    const rExport = Math.round(annualExportRevenue);
+    const rMaintenance = Math.round(maintenanceCost);
+    const rNetBenefit = rSavings + rExport - rMaintenance;
+
+    document.getElementById("tblBillSavings").innerText = `฿${rSavings.toLocaleString()}`;
+    document.getElementById("tblExportRevenue").innerText = `฿${rExport.toLocaleString()}`;
+    document.getElementById("tblMaintenance").innerText = `-฿${rMaintenance.toLocaleString()}`;
+    document.getElementById("tblTotalBenefit").innerText = `฿${rNetBenefit.toLocaleString()}`;
 
     document.getElementById("tdGen").innerText = `${Math.round(annualSolarGen).toLocaleString()} kWh`;
     document.getElementById("tdSelf").innerText = `${Math.round(annualSelfConsumed).toLocaleString()} kWh`;
-    document.getElementById("tdSelfValue").innerText = `฿${Math.round(annualFinancialSavings).toLocaleString()}`;
+    document.getElementById("tdSelfValue").innerText = `฿${rSavings.toLocaleString()}`;
     document.getElementById("tdExport").innerText = `${Math.round(annualExported).toLocaleString()} kWh`;
-    document.getElementById("tdExportValue").innerText = `฿${Math.round(annualExportRevenue).toLocaleString()}`;
+    document.getElementById("tdExportValue").innerText = `฿${rExport.toLocaleString()}`;
+    document.getElementById("tdMaintenanceCash").innerText = `-฿${rMaintenance.toLocaleString()}`;
     document.getElementById("tdTotalBenefitUnits").innerText = `${Math.round(annualSelfConsumed + annualExported).toLocaleString()} kWh`;
-    document.getElementById("tdTotalBenefitCash").innerText = `฿${Math.round(netAnnualBenefit).toLocaleString()}`;
+    document.getElementById("tdTotalBenefitCash").innerText = `฿${rNetBenefit.toLocaleString()}`;
 
     // Render high resolution chart profiles
     const selectedActiveProfile = (currentChartDayType === 'holiday') ? profileHoliday : profileWeekday;
@@ -1715,11 +1845,20 @@ function buildInteractiveLoadCharts(activeDemandProfile, kwp, weatherMultiplier,
         solarData.push(genKwh);
     }
 
-    if (loadProfileChart) { loadProfileChart.destroy(); }
+    // Update the existing chart in place rather than destroying/recreating it —
+    // far cheaper, which keeps recalculation snappy (especially on mobile).
+    if (loadProfileChart) {
+        loadProfileChart.data.labels = labels;
+        loadProfileChart.data.datasets[0].label = `การใช้ไฟฟ้าในบ้าน (${currentChartDayType === 'holiday' ? 'วันหยุด' : 'วันธรรมดา'}) (kW)`;
+        loadProfileChart.data.datasets[0].data = demandData;
+        loadProfileChart.data.datasets[1].data = solarData;
+        loadProfileChart.update();
+        return;
+    }
 
     const ctx = document.getElementById('loadProfileChart').getContext('2d'); // Crucial bug fixed: '2m' to '2d'
     if(!ctx) return;
-    
+
     loadProfileChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -1781,11 +1920,18 @@ function buildInteractivePaybackTrends(netCost, annualBenefit, maintenanceCost) 
         cashFlowData.push(currentBalance);
     }
 
-    if (paybackChart) { paybackChart.destroy(); }
+    // Update in place instead of destroy/recreate (see load chart note above).
+    if (paybackChart) {
+        paybackChart.data.labels = yearsLabels;
+        paybackChart.data.datasets[0].data = cashFlowData;
+        paybackChart.data.datasets[0].backgroundColor = cashFlowData.map(v => v >= 0 ? '#15803d' : '#ca8a04');
+        paybackChart.update();
+        return;
+    }
 
     const ctx = document.getElementById('paybackChart').getContext('2d');
     if(!ctx) return;
-    
+
     paybackChart = new Chart(ctx, {
         type: 'bar',
         data: {
